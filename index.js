@@ -1,12 +1,12 @@
 const express = require('express')
 const app = express()
 var cors = require('cors')
+
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const port = process.env.PORT||5000
 app.use(cors())
 
 app.use(express.json())
-
 
 
 
@@ -32,6 +32,30 @@ async function run() {
 
 
 let taskUserCollections=client.db("taskUserDB").collection("taskUserCollections");
+
+
+
+
+app.get("/allusers/admin/:email",  async (req, res) => {
+  const email = req.params.email;
+ 
+  const query = { email: email };
+  const user = await taskUserCollections.findOne(query);
+  const result = { admin: user?.role === "admin"||false };
+  console.log(result);
+  res.send(result); 
+});
+
+
+
+
+
+
+
+
+
+
+
 
 
 
